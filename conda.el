@@ -154,7 +154,7 @@ environment variable."
   "Find an environment.yml in DIR or its parent directories."
   ;; TODO: implement an optimized finder with e.g. projectile? Or a series of
   ;; finder functions, that stop at the project root when traversing
-  (let ((containing-path (f-traverse-upwards conda--contains-env-yml? dir)))
+  (let ((containing-path (f-traverse-upwards 'conda--contains-env-yml? dir)))
     (if containing-path
         (f-expand "environment.yml" containing-path)
       nil)))
@@ -446,6 +446,7 @@ This can be set by a buffer-local or project-local variable (e.g. a
 `.dir-locals.el` that defines `conda-project-env-name`), or inferred from an
 `environment.yml` or similar at the project level."
   (interactive)
+  (setq conda-project-env-name (bound-and-true-p conda-project-env-name))
   (let ((env-name (if conda-project-env-name
                       conda-project-env-name
                     (conda--infer-env-from-buffer))))
